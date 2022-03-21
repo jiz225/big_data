@@ -6,3 +6,6 @@ javac -cp .:`hbase classpath` HW2_HBase.java
 
 java -cp .:`hbase classpath` HW2_HBase
 
+3. result
+
+![image info](out.png)
