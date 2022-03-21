@@ -5,9 +5,9 @@ import org.apache.hadoop.hbase.util.Bytes;
 import java.io.IOException;
 import java.util.List;
 public class HW2_HBase{
-    public static void insertData(Connection connection, TableName tableName, String row, String columns, String cell, String value) throws IOException{
+    public static void insertData(Connection connection, TableName tableName, String row, String colFamily, String col, String cell) throws IOException{
         Put put = new Put(Bytes.toBytes(row));
-        put.addColumn(Bytes.toBytes(columns), Bytes.toBytes(cell), Bytes.toBytes(value));
+        put.addColumn(Bytes.toBytes(colFamily), Bytes.toBytes(col), Bytes.toBytes(cell));
 
         connection.getTable(tableName).put(put);
     }
@@ -84,9 +84,9 @@ public class HW2_HBase{
         Result result = null;
         while ((result = scanner.next()) != null) {
             List<Cell> cells = result.listCells();
-            System.out.print(Bytes.toString(CellUtil.cloneRow(cells.get(0))) + " => ");
+            System.out.print(Bytes.toString(CellUtil.cloneRow(cells.get(0))) + " : ");
             for (Cell cell : cells) {
-                System.out.print(Bytes.toString(CellUtil.cloneFamily(cell)) + " {" + Bytes.toString(CellUtil.cloneQualifier(cell)) + ":" + Bytes.toString(CellUtil.cloneValue(cell)) + "} ");
+                System.out.print(Bytes.toString(CellUtil.cloneFamily(cell)) + " <" + Bytes.toString(CellUtil.cloneQualifier(cell)) + ":" + Bytes.toString(CellUtil.cloneValue(cell)) + "> ");
             }
             System.out.println();
         }
@@ -98,9 +98,9 @@ public class HW2_HBase{
         Get get = new Get(Bytes.toBytes("Rose"));
         if (!get.isCheckExistenceOnly()) {
             Result result1 = conn.getTable(tableName).get(get);
-            System.out.print("FIND Rose => ");
+            System.out.print("FIND Rose : ");
             for (Cell cell : result1.rawCells()) {
-                System.out.print(Bytes.toString(CellUtil.cloneFamily(cell)) + " {" + Bytes.toString(CellUtil.cloneQualifier(cell)) + ":" + Bytes.toString(CellUtil.cloneValue(cell)) + "}");
+                System.out.print(Bytes.toString(CellUtil.cloneFamily(cell)) + " <" + Bytes.toString(CellUtil.cloneQualifier(cell)) + ":" + Bytes.toString(CellUtil.cloneValue(cell)) + "> ");
             }
             System.out.println("Data get success");
         }
