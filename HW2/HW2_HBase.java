@@ -5,7 +5,7 @@ import org.apache.hadoop.hbase.util.Bytes;
 import java.io.IOException;
 import java.util.List;
 public class HW2_HBase{
-    public static void putDataRow(Connection connection, TableName tableName, String row, String columns, String cell, String value) throws IOException{
+    public static void insertData(Connection connection, TableName tableName, String row, String columns, String cell, String value) throws IOException{
         Put put = new Put(Bytes.toBytes(row));
         put.addColumn(Bytes.toBytes(columns), Bytes.toBytes(cell), Bytes.toBytes(value));
 
@@ -34,6 +34,7 @@ public class HW2_HBase{
 
         if (!findNamespace(admin, ns)) {
             NamespaceDescriptor nsDescriptor = NamespaceDescriptor.create(ns).build();
+            admin.createNamespace(nsDescriptor);
             System.out.println("Namespace create successful");
         } else {
             System.out.println("Namespace " + ns + " already exists");
@@ -53,28 +54,28 @@ public class HW2_HBase{
             System.out.println("Table create successful");
         }
 
-        putDataRow(conn, tableName, "Tom", "info", "student_id", "20210000000001");
-        putDataRow(conn, tableName, "Tom", "info", "class", "1");
-        putDataRow(conn, tableName, "Tom", "score", "understanding", "75");
-        putDataRow(conn, tableName, "Tom", "score", "programming", "82");
+        insertData(conn, tableName, "Tom", "info", "student_id", "20210000000001");
+        insertData(conn, tableName, "Tom", "info", "class", "1");
+        insertData(conn, tableName, "Tom", "score", "understanding", "75");
+        insertData(conn, tableName, "Tom", "score", "programming", "82");
 
-        putDataRow(conn, tableName, "Jerry", "info", "student_id", "20210000000002");
-        putDataRow(conn, tableName, "Jerry", "info", "class", "1");
-        putDataRow(conn, tableName, "Jerry", "score", "understanding", "85");
-        putDataRow(conn, tableName, "Jerry", "score", "programming", "67");
+        insertData(conn, tableName, "Jerry", "info", "student_id", "20210000000002");
+        insertData(conn, tableName, "Jerry", "info", "class", "1");
+        insertData(conn, tableName, "Jerry", "score", "understanding", "85");
+        insertData(conn, tableName, "Jerry", "score", "programming", "67");
 
-        putDataRow(conn, tableName, "Jack", "info", "student_id", "20210000000003");
-        putDataRow(conn, tableName, "Jack", "info", "class", "2");
-        putDataRow(conn, tableName, "Jack", "score", "understanding", "80");
-        putDataRow(conn, tableName, "Jack", "score", "programming", "80");
+        insertData(conn, tableName, "Jack", "info", "student_id", "20210000000003");
+        insertData(conn, tableName, "Jack", "info", "class", "2");
+        insertData(conn, tableName, "Jack", "score", "understanding", "80");
+        insertData(conn, tableName, "Jack", "score", "programming", "80");
 
-        putDataRow(conn, tableName, "Rose", "info", "student_id", "20210000000004");
-        putDataRow(conn, tableName, "Rose", "info", "class", "2");
-        putDataRow(conn, tableName, "Rose", "score", "understanding", "60");
-        putDataRow(conn, tableName, "Rose", "score", "programming", "61");
+        insertData(conn, tableName, "Rose", "info", "student_id", "20210000000004");
+        insertData(conn, tableName, "Rose", "info", "class", "2");
+        insertData(conn, tableName, "Rose", "score", "understanding", "60");
+        insertData(conn, tableName, "Rose", "score", "programming", "61");
 
-        putDataRow(conn, tableName, "zjx", "info", "student_id", "G20200343130026");
-        putDataRow(conn, tableName, "zjx", "info", "class", "1");
+        insertData(conn, tableName, "zjx", "info", "student_id", "G20200343130026");
+        insertData(conn, tableName, "zjx", "info", "class", "1");
         System.out.println("Data insertion success");
 
         Table table = conn.getTable(tableName);
@@ -119,30 +120,4 @@ public class HW2_HBase{
             System.out.println("Namespace does not exist!");
         }
     }
-    /*public static void main(String[] args) throws IOException {
-        Configuration configuration = HBaseConfiguration.create();
-        configuration.set("hbase.zookeeper.quorum", "emr-worker-2,emr-worker-1,emr-header-1");
-        configuration.set("hbase.zookeeper.property.clientPort", "2181");
-        configuration.set("hbase.master", "127.0.0.1:60000");
-        Connection conn = ConnectionFactory.createConnection(configuration);
-        Admin admin = conn.getAdmin();
-
-        TableName tableName = TableName.valueOf("zhangj_student");
-        String[] colFamilies = {"info", "score"};
-        if (admin.tableExists(tableName)) {
-            System.out.println("Table already exists");
-        } else {
-            TableDescriptorBuilder tdBuilder = TableDescriptorBuilder.newBuilder(tableName);
-            ColumnFamilyDescriptorBuilder cfdBuilder;
-            ColumnFamilyDescriptor cfd;
-            for (String colFamily : colFamilies) {
-                cfdBuilder = ColumnFamilyDescriptorBuilder.newBuilder(Bytes.toBytes(colFamily));
-                cfd = cfdBuilder.build();
-                tdBuilder.setColumnFamily(cfd);
-            }
-            TableDescriptor td = tdBuilder.build();
-            admin.createTable(td);
-            System.out.println("Table create successful");
-        }
-    }*/
 }
