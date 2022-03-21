@@ -5,12 +5,15 @@ import org.apache.hadoop.hbase.util.Bytes;
 import java.io.IOException;
 import java.util.List;
 public class HW2_HBase{
+    // insert data into table by <row: <columnfamily : column : cell>>
     public static void insertData(Connection connection, TableName tableName, String row, String colFamily, String col, String cell) throws IOException{
         Put put = new Put(Bytes.toBytes(row));
         put.addColumn(Bytes.toBytes(colFamily), Bytes.toBytes(col), Bytes.toBytes(cell));
 
         connection.getTable(tableName).put(put);
     }
+    
+    // iterate through all namespaces to find namespace of name ns 
     public static boolean findNamespace(Admin admin, String ns) throws IOException {
         NamespaceDescriptor[] nsDescriptors = admin.listNamespaceDescriptors();
         boolean find_ns = false;
@@ -22,6 +25,7 @@ public class HW2_HBase{
         return false;
     }
     public static void main(String[] args) throws IOException {
+        // set configuration
         Configuration configuration = HBaseConfiguration.create();
         configuration.set("hbase.zookeeper.quorum", "emr-worker-2,emr-worker-1,emr-header-1");
         configuration.set("hbase.zookeeper.property.clientPort", "2181");
@@ -32,6 +36,7 @@ public class HW2_HBase{
         String ns = "zhangj";
         String tb = "student";
 
+        // create namespace
         if (!findNamespace(admin, ns)) {
             NamespaceDescriptor nsDescriptor = NamespaceDescriptor.create(ns).build();
             admin.createNamespace(nsDescriptor);
@@ -40,6 +45,7 @@ public class HW2_HBase{
             System.out.println("Namespace " + ns + " already exists");
         }
 
+        // create table
         TableName tableName = TableName.valueOf(ns + ":" + tb);
         String[] colFamilies = {"info", "score"};
         if (admin.tableExists(tableName)) {
@@ -54,6 +60,7 @@ public class HW2_HBase{
             System.out.println("Table create successful");
         }
 
+        // insert data
         insertData(conn, tableName, "Tom", "info", "student_id", "20210000000001");
         insertData(conn, tableName, "Tom", "info", "class", "1");
         insertData(conn, tableName, "Tom", "score", "understanding", "75");
@@ -78,6 +85,7 @@ public class HW2_HBase{
         insertData(conn, tableName, "zjx", "info", "class", "1");
         System.out.println("Data insertion success");
 
+        // print the whole table out
         Table table = conn.getTable(tableName);
         Scan scan = new Scan();
         ResultScanner scanner = table.getScanner(scan);
@@ -91,10 +99,12 @@ public class HW2_HBase{
             System.out.println();
         }
 
+        // delete row Jerry
         Delete delete = new Delete(Bytes.toBytes("Jerry"));
         conn.getTable(tableName).delete(delete);
         System.out.println("Jerry deletion Success");
         
+        // get row Rose
         Get get = new Get(Bytes.toBytes("Rose"));
         if (!get.isCheckExistenceOnly()) {
             Result result1 = conn.getTable(tableName).get(get);
@@ -105,6 +115,7 @@ public class HW2_HBase{
             System.out.println("Data get success");
         }
 
+        // delete table
         if (admin.tableExists(tableName)) {
             admin.disableTable(tableName);
             admin.deleteTable(tableName);
@@ -113,6 +124,7 @@ public class HW2_HBase{
             System.out.println("Table does not exist!");
         }
 
+        // delete namespace
         if (findNamespace(admin, ns)) {
             admin.deleteNamespace(ns);
             System.out.println("Namespace Delete Successful");
