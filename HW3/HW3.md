@@ -1,10 +1,10 @@
 1. create tables
 
-create external table t_rating_jz (userid int, movieid int, rate int, times bigint) row format serde 'org.apache.hadoop.hive.contrib.serde2.MultiDelimitSerDe' with serdeproperties ("field.delim"="::") stored as textfile location '/data/hive/ratings.dat';
+create external table t_rating_jz (userid int, movieid int, rate int, times bigint) row format serde 'org.apache.hadoop.hive.contrib.serde2.MultiDelimitSerDe' with serdeproperties ("field.delim"="::") stored as textfile location '/data/hive/rating';
 
-create external table t_user_jz (userid int, sex string, age int, occupation int, zipcode int)  row format serde 'org.apache.hadoop.hive.contrib.serde2.MultiDelimitSerDe' with serdeproperties ("field.delim"="::") stored as textfile location '/data/hive/users.dat';
+create external table t_user_jz (userid int, sex string, age int, occupation int, zipcode int)  row format serde 'org.apache.hadoop.hive.contrib.serde2.MultiDelimitSerDe' with serdeproperties ("field.delim"="::") stored as textfile location '/data/hive/users';
 
-create external table t_movie_jz (movieid int, moviename string, movietype string) row format serde 'org.apache.hadoop.hive.contrib.serde2.MultiDelimitSerDe' with serdeproperties ("field.delim"="::") stored as textfile location '/data/hive/movies.dat';
+create external table t_movie_jz (movieid int, moviename string, movietype string) row format serde 'org.apache.hadoop.hive.contrib.serde2.MultiDelimitSerDe' with serdeproperties ("field.delim"="::") stored as textfile location '/data/hive/movies';
 
 2. 
 problem 1
