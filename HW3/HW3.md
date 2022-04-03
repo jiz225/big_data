@@ -19,4 +19,10 @@ select distinct top10.sex as sex, m.moviename as name, top10.avg_rate as avgrate
 
 ![image info](top10.png)
 
+3. drop tables
 
+drop table t_rating_jz;
+
+drop table t_user_jz;
+
+drop table t_movie_jz;
