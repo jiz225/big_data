@@ -19,6 +19,9 @@ select distinct top10.sex as sex, m.moviename as name, top10.avg_rate as avgrate
 
 ![image info](top10.png)
 
+problem 3
+做第三题的时候/data/hive/users和/data/hive/users.dat都空了
+
 3. drop tables
 
 drop table t_rating_jz;
