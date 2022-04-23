@@ -13,3 +13,16 @@ spark-submit --class spark.zjx.invertedIndex target/spark.jar
 5. output is 
 
 ![image info](p1.png)
+
+
+Problem 2
+
+1. parse options and store in Options
+
+2. mkdir: go to the next folders and recursively make folders in target folder if there's any folder in source folders. If there's a file, store source filepath and target filepath in a tuple and append it to array
+
+3. copyfile: use concurrence to parallelize the array and for each partition, copy files from tuple.source to tuple.target in the partition.
+
+4. results
+
+![image info](p2.png) 
