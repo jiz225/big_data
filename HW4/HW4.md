@@ -23,6 +23,10 @@ Problem 2
 
 3. copyfile: use concurrence to parallelize the array and for each partition, copy files from tuple.source to tuple.target in the partition.
 
-4. results
+4. run jar file with
+
+spark-submit --class spark.zjx.distCP target/spark.jar --source /Users/jingxiaozhang/Desktop/learn/Geek/spark_HW/source_folder --target /Users/jingxiaozhang/Desktop/learn/Geek/spark_HW/target_folder -i true -m 2
+
+5. results
 
 ![image info](p2.png) 
